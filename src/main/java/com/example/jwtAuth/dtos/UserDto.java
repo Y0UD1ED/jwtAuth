@@ -1,6 +1,5 @@
 package com.example.jwtAuth.dtos;
 
-import com.example.jwtAuth.models.ExtendUser;
 import com.example.jwtAuth.models.Role;
 import com.example.jwtAuth.models.User;
 

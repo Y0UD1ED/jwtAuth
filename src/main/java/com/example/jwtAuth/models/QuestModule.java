@@ -1,10 +1,13 @@
 package com.example.jwtAuth.models;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
+
 
 public class QuestModule{
 
-    Integer moduleId;
+    Integer courseId;
     Integer questId;
 
     String quest;
@@ -43,11 +46,11 @@ public class QuestModule{
         this.questPosition = questPosition;
     }
 
-    public Integer getModuleId() {
-        return moduleId;
+    public Integer getCourseId() {
+        return courseId;
     }
 
-    public void setModuleId(Integer moduleId) {
-        this.moduleId = moduleId;
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
     }
 }

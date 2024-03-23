@@ -1,7 +1,6 @@
 package com.example.jwtAuth.utils;
 
 
-import com.example.jwtAuth.models.BaseUser;
 import com.example.jwtAuth.models.ExtendUserDetails;
 import com.example.jwtAuth.models.Role;
 import com.example.jwtAuth.models.User;

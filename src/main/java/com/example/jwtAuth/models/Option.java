@@ -4,10 +4,10 @@ public class Option {
     Integer id;
 
     String option;
-    Boolean isCorrect;
+    Boolean correct;
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Integer id) {
@@ -15,7 +15,7 @@ public class Option {
     }
 
     public String getOption() {
-        return option;
+        return this.option;
     }
 
     public void setOption(String option) {
@@ -23,10 +23,10 @@ public class Option {
     }
 
     public Boolean getCorrect() {
-        return isCorrect;
+        return correct;
     }
 
     public void setCorrect(Boolean correct) {
-        isCorrect = correct;
+        this.correct = correct;
     }
 }

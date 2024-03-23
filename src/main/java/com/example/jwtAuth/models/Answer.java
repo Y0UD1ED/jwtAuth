@@ -1,17 +1,17 @@
 package com.example.jwtAuth.models;
 
 public class Answer {
-    BaseUser user;
+    User user;
 
     QuestModule questModule;
 
     Option option;
 
-    public BaseUser getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(BaseUser user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

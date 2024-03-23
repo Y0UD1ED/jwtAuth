@@ -1,7 +1,7 @@
 package com.example.jwtAuth.models;
 
 public class InfoModule{
-    Integer moduleId;
+    Integer courseId;
     Integer infoId;
     Integer contentPosition;
     String contentType;
@@ -39,11 +39,11 @@ public class InfoModule{
         this.content = content;
     }
 
-    public Integer getModuleId() {
-        return moduleId;
+    public Integer getCourseId() {
+        return courseId;
     }
 
-    public void setModuleId(Integer moduleId) {
-        this.moduleId = moduleId;
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
     }
 }

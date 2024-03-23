@@ -1,8 +1,6 @@
 package com.example.jwtAuth.services;
 
 import com.example.jwtAuth.authentications.JwtAuthentication;
-import com.example.jwtAuth.dao.BaseUserDAO;
-import com.example.jwtAuth.dao.ExtendUserDAO;
 import com.example.jwtAuth.dao.RoleDAO;
 
 import com.example.jwtAuth.dao.UserDAO;

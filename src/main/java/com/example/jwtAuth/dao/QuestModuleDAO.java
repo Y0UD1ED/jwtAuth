@@ -2,9 +2,11 @@ package com.example.jwtAuth.dao;
 
 import com.example.jwtAuth.models.QuestModule;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class QuestModuleDAO {
     private final JdbcTemplate jdbcTemplate;
 
@@ -12,25 +14,24 @@ public class QuestModuleDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<QuestModule> findByModuleId(Integer moduleId){
-        String sql="SELECT * FROM quest_module WHERE module_id=(?)";
+    public List<QuestModule> findByCourseId(Integer courseId){
+        String sql="SELECT * FROM quest_modules WHERE course_id=(?) ORDER BY position";
         return jdbcTemplate.query(sql,(rs,rowNum)->{
             QuestModule questModule=new QuestModule();
-            questModule.setModuleId(moduleId);
+            questModule.setCourseId(courseId);
             questModule.setQuestId(rs.getInt("id"));
-            questModule.setQuestId(rs.getInt("quest_modules.id"));
-            questModule.setQuestPosition(rs.getInt("order"));
+            questModule.setQuestPosition(rs.getInt("position"));
             questModule.setQuest(rs.getString("quest"));
             return questModule;
-        }).stream().toList();
+        },courseId).stream().toList();
     }
     public void save(QuestModule questModule){
-        String sql="INSERT INTO quest_modules (module_id,order,quest) VALUES (?,?,?)";
-        jdbcTemplate.update(sql,questModule.getModuleId(),questModule.getQuestPosition(),questModule.getQuest());
+        String sql="INSERT INTO quest_modules (course_id,position,quest) VALUES (?,?,?)";
+        jdbcTemplate.update(sql,questModule.getCourseId(),questModule.getQuestPosition(),questModule.getQuest());
     }
 
     public void delete(Integer moduleId){
-        String sql="DELETE FROM quest_modules WHERE module_id=(?)";
+        String sql="DELETE FROM quest_modules WHERE course_id=(?)";
         jdbcTemplate.update(sql,moduleId);
     }
 }

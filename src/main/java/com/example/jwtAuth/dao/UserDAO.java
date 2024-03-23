@@ -1,6 +1,6 @@
 package com.example.jwtAuth.dao;
 
-import com.example.jwtAuth.models.ExtendUser;
+
 import com.example.jwtAuth.models.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;

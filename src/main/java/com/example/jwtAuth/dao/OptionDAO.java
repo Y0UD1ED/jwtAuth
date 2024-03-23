@@ -2,9 +2,11 @@ package com.example.jwtAuth.dao;
 
 import com.example.jwtAuth.models.Option;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class OptionDAO {
     private final JdbcTemplate jdbcTemplate;
 
@@ -20,12 +22,12 @@ public class OptionDAO {
             option.setId(rs.getInt("id"));
             option.setCorrect(rs.getBoolean("correct"));
             return option;
-        }).stream().toList();
+        },questId).stream().toList();
     }
 
-    public void save(Option option){
-        String sql="INSERT INTO options(id,option,correct) VALUES(?,?,?)";
-        jdbcTemplate.update(sql,option.getId(),option.getOption(),option.getCorrect());
+    public void save(Option option,Integer questId){
+        String sql="INSERT INTO options(option,correct,quest_id) VALUES(?,?,?)";
+        jdbcTemplate.update(sql,option.getOption(),option.getCorrect(),questId);
     }
 
     public void delete(Integer questId){
