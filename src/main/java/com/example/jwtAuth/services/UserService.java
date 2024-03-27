@@ -1,6 +1,8 @@
 package com.example.jwtAuth.services;
 
 import com.example.jwtAuth.authentications.JwtAuthentication;
+import com.example.jwtAuth.dao.DirectionDAO;
+import com.example.jwtAuth.dao.LevelDAO;
 import com.example.jwtAuth.dao.RoleDAO;
 
 import com.example.jwtAuth.dao.UserDAO;
@@ -23,15 +25,22 @@ public class UserService implements UserDetailsService {
 
     private final RoleDAO roleDAO;
 
-    public UserService(RoleDAO roleDAO, UserDAO userDAO) {
-        this.roleDAO=roleDAO;
-        this.userDAO=userDAO;
-    }
+    private final LevelDAO levelDAO;
 
+    private final DirectionDAO directionDAO;
+
+    public UserService(UserDAO userDAO, RoleDAO roleDAO, LevelDAO levelDAO, DirectionDAO directionDAO) {
+        this.userDAO = userDAO;
+        this.roleDAO = roleDAO;
+        this.levelDAO = levelDAO;
+        this.directionDAO = directionDAO;
+    }
 
     public User findByUsername(String username){
         User user=userDAO.show(username);
         user.setRoles(roleDAO.show(user.getId()));
+        user.setDirection(directionDAO.findById(user.getDirection().getId()));
+        user.setCurrentLevel(levelDAO.findById(user.getCurrentLevel().getId()));
         return user;
     }
 

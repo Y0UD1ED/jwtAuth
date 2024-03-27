@@ -7,6 +7,9 @@ public class Course {
     String name;
     String description;
 
+    Level level;
+    Direction direction;
+
 
     public Integer getId() {
         return id;
@@ -38,5 +41,21 @@ public class Course {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }

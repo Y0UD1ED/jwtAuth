@@ -15,11 +15,11 @@ public class User {
     private String phone;
     private String city;
     private String company;
-    private String currentLevel;
-    private String nextLevel;
     private String photo;
     private Integer scores;
 
+    private Level currentLevel;
+    private Direction direction;
     public Integer getId() {
         return id;
     }
@@ -116,21 +116,6 @@ public class User {
         this.company = company;
     }
 
-    public String getCurrentLevel() {
-        return currentLevel;
-    }
-
-    public void setCurrentLevel(String currentLevel) {
-        this.currentLevel = currentLevel;
-    }
-
-    public String getNextLevel() {
-        return nextLevel;
-    }
-
-    public void setNextLevel(String nextLevel) {
-        this.nextLevel = nextLevel;
-    }
 
     public String getPhoto() {
         return photo;
@@ -146,5 +131,21 @@ public class User {
 
     public void setScores(Integer scores) {
         this.scores = scores;
+    }
+
+    public Level getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(Level currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.jwtAuth.dtos;
 
+import com.example.jwtAuth.models.Direction;
+import com.example.jwtAuth.models.Level;
 import com.example.jwtAuth.models.Role;
 import com.example.jwtAuth.models.User;
 
@@ -13,9 +15,9 @@ public class UserDto {
     String middleName;
     String DoB;
     String DoW;
-    String currentLevel;
+    Level currentLevel;
 
-    String nextLevel;
+    Direction direction;
     String company;
     String city;
     String email;
@@ -27,24 +29,17 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(User user) {
-        this.id = user.getId();
-        this.firstName = user.getFirstName();
-        this.secondName = user.getSecondName();
-        this.middleName = user.getMiddleName();
-        this.currentLevel = user.getCurrentLevel();
-        this.nextLevel = user.getNextLevel();
-        this.DoB = user.getDoB();
-        this.DoW = user.getDoW();
-        this.company = user.getCompany();
-        this.city = user.getCity();
-        this.email = user.getUsername();
-        this.phone = user.getPhone();
-        this.photo = user.getPhoto();
-        this.scores = user.getScores();
-        this.roles=user.getRoles();
+    public void setCurrentLevel(Level currentLevel) {
+        this.currentLevel = currentLevel;
     }
 
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
 
     public Integer getId() {
         return id;
@@ -143,20 +138,8 @@ public class UserDto {
     }
 
 
-    public String getCurrentLevel() {
+    public Level getCurrentLevel() {
         return currentLevel;
-    }
-
-    public void setCurrentLevel(String currentLevel) {
-        this.currentLevel = currentLevel;
-    }
-
-    public String getNextLevel() {
-        return nextLevel;
-    }
-
-    public void setNextLevel(String nextLevel) {
-        this.nextLevel = nextLevel;
     }
 
     public Collection<Role> getRoles() {

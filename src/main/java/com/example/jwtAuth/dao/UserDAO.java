@@ -1,6 +1,8 @@
 package com.example.jwtAuth.dao;
 
 
+import com.example.jwtAuth.models.Direction;
+import com.example.jwtAuth.models.Level;
 import com.example.jwtAuth.models.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -29,8 +31,8 @@ public class UserDAO {
             user.setDoW(rs.getString("dow"));
             user.setPhone(rs.getString("phone"));
             user.setPhoto(rs.getString("photo"));
-            user.setCurrentLevel(rs.getString("current_level"));
-            user.setNextLevel(rs.getString("next_level"));
+            user.setCurrentLevel(new Level(rs.getInt("current_level")));
+            user.setDirection(new Direction(rs.getInt("direction")));
             user.setScores(rs.getInt("scores"));
             return user;
         },id).stream().findFirst().orElse(null);
@@ -52,8 +54,8 @@ public class UserDAO {
             user.setDoW(rs.getString("dow"));
             user.setPhone(rs.getString("phone"));
             user.setPhoto(rs.getString("photo"));
-            user.setCurrentLevel(rs.getString("current_level"));
-            user.setNextLevel(rs.getString("next_level"));
+            user.setCurrentLevel(new Level(rs.getInt("current_level")));
+            user.setDirection(new Direction(rs.getInt("direction")));
             user.setScores(rs.getInt("scores"));
             return user;
         },login).stream().findAny().orElse(null);
@@ -78,6 +80,6 @@ public class UserDAO {
     }
     public void fullSave(User user) {
         String sql="INSERT INTO users (login,password,first_name,second_name,middle_name,city,company,dob,dow,phone,photo,current_level,next_level,scores) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        jdbcTemplate.update(sql,user.getUsername(),user.getPassword(),user.getFirstName(),user.getSecondName(),user.getMiddleName(),user.getCity(),user.getCompany(),user.getDoB(),user.getDoW(),user.getPhone(),user.getPhoto(),user.getCurrentLevel(),user.getNextLevel(),user.getScores());
+        jdbcTemplate.update(sql,user.getUsername(),user.getPassword(),user.getFirstName(),user.getSecondName(),user.getMiddleName(),user.getCity(),user.getCompany(),user.getDoB(),user.getDoW(),user.getPhone(),user.getPhoto(),user.getCurrentLevel().getId(),user.getDirection().getId(),user.getScores());
     }
 }

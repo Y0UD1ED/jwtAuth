@@ -30,6 +30,10 @@ public class CourseController {
         courseService.save(course);
     }
 
+    @GetMapping("/getCourses")
+    public ResponseEntity<?> getCourses() {
+        return ResponseEntity.ok(courseService.findAll());
+    }
     @GetMapping("/getCourses/{id}")
     public ResponseEntity<?> getCourse(@PathVariable(value = "id") Integer id) {
         return ResponseEntity.ok(courseService.findById(id));

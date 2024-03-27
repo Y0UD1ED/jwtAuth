@@ -12,11 +12,13 @@ public interface UserMapper {
 
     @Mapping(source = "username", target = "email")
     @Mapping(source = "roles", target = "roles")
+    @Mapping(source = "currentLevel",target = "currentLevel")
     public UserDto userToUserDto(User user);
 
     @Mapping(source = "email", target = "username")
     @Mapping(source = "roles", target = "roles")
     @Mapping(source = "doW", target = "doW")
+    @Mapping(source = "currentLevel",target = "currentLevel")
     public User userDtoToUser(UserDto userDto);
 
     @Mapping(source = "email", target = "username")
