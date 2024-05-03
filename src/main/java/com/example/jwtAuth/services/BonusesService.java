@@ -68,16 +68,7 @@ public class BonusesService {
     }
 
 
-    public List<Bonus> getMyBonuses() {
-        JwtAuthentication jwtAuthentication = (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
-        Integer userId = ((ExtendUserDetails) jwtAuthentication.getPrincipal()).getId();
-        List<Integer> bonusIds = usersBonusesDAO.getUsersBonuses(userId);
-        List<Bonus> bonuses = new ArrayList<>();
-        for (Integer bonusId : bonusIds) {
-            bonuses.add(bonusesDAO.getBonusById(bonusId));
-        }
-        return bonuses;
-    }
+
 
 
 }
