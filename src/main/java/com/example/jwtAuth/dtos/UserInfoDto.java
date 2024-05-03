@@ -3,10 +3,8 @@ package com.example.jwtAuth.dtos;
 import com.example.jwtAuth.models.Direction;
 import com.example.jwtAuth.models.Level;
 import com.example.jwtAuth.models.Role;
-import com.example.jwtAuth.models.User;
 
 import java.util.Collection;
-import java.util.List;
 
 public class UserDto {
     Integer id;
@@ -15,30 +13,18 @@ public class UserDto {
     String middleName;
     String DoB;
     String DoW;
-    Level currentLevel;
+    String currentLevel;
 
-    Direction direction;
+    String direction;
     String job;
     String city;
     String email;
     String phone;
     String photo;
-    Integer scores;
+    Integer balance;
     Collection<Role> roles;
 
     public UserDto() {
-    }
-
-    public void setCurrentLevel(Level currentLevel) {
-        this.currentLevel = currentLevel;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
     }
 
     public Integer getId() {
@@ -89,6 +75,21 @@ public class UserDto {
         DoW = doW;
     }
 
+    public String getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(String currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
 
     public String getJob() {
         return job;
@@ -130,17 +131,12 @@ public class UserDto {
         this.photo = photo;
     }
 
-    public Integer getScores() {
-        return scores;
+    public Integer getBalance() {
+        return balance;
     }
 
-    public void setScores(Integer scores) {
-        this.scores = scores;
-    }
-
-
-    public Level getCurrentLevel() {
-        return currentLevel;
+    public void setBalance(Integer balance) {
+        this.balance = balance;
     }
 
     public Collection<Role> getRoles() {
