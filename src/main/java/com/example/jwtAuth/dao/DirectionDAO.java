@@ -13,7 +13,7 @@ public class DirectionDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Direction findById(int id) {
+    public Direction getDirectionById(int id) {
         String sql = "SELECT * FROM directions WHERE id =?";
         return jdbcTemplate.query(sql,(rs, rowNum) -> {
             Direction direction = new Direction();
@@ -23,17 +23,17 @@ public class DirectionDAO {
         }, id).stream().findAny().orElse(null);
     }
 
-    public void save(Direction direction) {
+    public void addDirection(Direction direction) {
         String sql = "INSERT INTO directions (name) VALUES (?)";
         jdbcTemplate.update(sql, direction.getName());
     }
 
-    public void update(Direction direction) {
+    public void updateDirection(Direction direction) {
         String sql = "UPDATE directions SET name =? WHERE id =?";
         jdbcTemplate.update(sql, direction.getName(), direction.getId());
     }
 
-    public void delete(int id){
+    public void deleteDirection(int id){
         String sql = "DELETE FROM directions WHERE id =?";
         jdbcTemplate.update(sql, id);
     }

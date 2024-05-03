@@ -12,6 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,27 +67,21 @@ public class AuthController {
 
     @PostMapping("/reg")
     public ResponseEntity<?> regUser(@RequestBody RegRequest regRequest){
-        User user=userMapper.RegRequestToUser(regRequest);
-        JwtResponse jwtResponse=authService.regUser(user);
-        List<Object> list=new ArrayList<>();
-        list.add(jwtResponse);
-        list.add(user);
-        return ResponseEntity.ok(list);
-
-    }
-
-    @RequestMapping(value = "/update_user", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateUser(@RequestBody UserDto userDto){
-        try{
-            User user=userMapper.userDtoToUser(userDto);
-            User userUpdated =userService.updateUser(user);
-            UserDto userDtoUpdated=userMapper.userToUserDto(userUpdated);
-            return ResponseEntity.ok(userDtoUpdated);
-        }catch (UsernameNotFoundException e){
-            return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(),"Пользователь не найден"),HttpStatus.NOT_FOUND);
+        try {
+            User user = userMapper.RegRequestToUser(regRequest);
+            JwtResponse jwtResponse = authService.regUser(user, regRequest.getPassword(), regRequest.getConfirmPassword());
+            List<Object> list = new ArrayList<>();
+            list.add(jwtResponse);
+            list.add(user);
+            return ResponseEntity.ok(list);
+        }catch (RuntimeException e){
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),e.getMessage()),HttpStatus.BAD_REQUEST);
+        } catch (AuthenticationException e) {
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(),"Пользователь с таким логином уже существует"),HttpStatus.BAD_REQUEST);
         }
 
     }
+
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {

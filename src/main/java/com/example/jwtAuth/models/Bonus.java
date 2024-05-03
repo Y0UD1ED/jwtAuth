@@ -1,16 +1,13 @@
 package com.example.jwtAuth.models;
 
-import java.util.List;
-
-public class Bonuses {
+public class Bonus {
     Integer id;
     String name;
     String description;
     Integer count;
 
+    String image;
     Integer price;
-    List<Property> propertyList;
-
     public Integer getId() {
         return id;
     }
@@ -51,11 +48,12 @@ public class Bonuses {
         this.price = price;
     }
 
-    public List<Property> getPropertyList() {
-        return propertyList;
+
+    public String getImage() {
+        return image;
     }
 
-    public void setPropertyList(List<Property> propertyList) {
-        this.propertyList = propertyList;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

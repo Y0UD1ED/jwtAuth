@@ -13,9 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.util.Collection;
 
 @Service
@@ -37,44 +37,61 @@ public class UserService implements UserDetailsService {
     }
 
     public User findByUsername(String username){
-        User user=userDAO.show(username);
-        user.setRoles(roleDAO.show(user.getId()));
-        user.setDirection(directionDAO.findById(user.getDirection().getId()));
-        user.setCurrentLevel(levelDAO.findById(user.getCurrentLevel().getId()));
+        User user=userDAO.getUserByLogin(username);
+        user.setRoles(roleDAO.getUsersRoles(user.getId()));
+        user.setDirection(directionDAO.getDirectionById(user.getDirection().getId()));
+        user.setCurrentLevel(levelDAO.getById(user.getCurrentLevel().getId()));
         return user;
     }
 
-    public ExtendUserDetails createUser(User user){
-        Boolean check=userDAO.check(user.getUsername());
+    public ExtendUserDetails createUser(User user) throws AuthenticationException {
+        boolean check=userDAO.isUserExist(user.getUsername());
         if(check){
-            throw new UsernameNotFoundException(String.format("User '%s' already exists",user.getUsername()));
+            throw new AuthenticationException(String.format("User '%s' already exists",user.getUsername()));
         }
-        userDAO.save(user);
+        userDAO.addUser(user);
         user.setId(userDAO.getUserId(user.getUsername()));
-        roleDAO.setRole(user.getId(),user.getRoles().stream().toList().get(0).getId());
+        roleDAO.setUserRole(user.getId());
+        user.setScores(0);
+        user.setRoles(roleDAO.getUsersRoles(user.getId()));
         return new ExtendUserDetails(user.getId(),user.getUsername(),user.getPassword(),user.getRoles());
     }
 
-    public User updateUser(User userUpdated){
+    public void createFullUser(User user){
+        boolean check=userDAO.isUserExist(user.getUsername());
+        if(check){
+            throw new UsernameNotFoundException(String.format("User '%s' already exists",user.getUsername()));
+        }
+        userDAO.addFullUser(user);
+        Integer id=userDAO.getUserId(user.getUsername());
+        roleDAO.setUserRole(id);
+    }
+
+    public User updateUser(User userUpdated,String updatedUsername){
         JwtAuthentication authentication= (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
         ExtendUserDetails user= (ExtendUserDetails) authentication.getPrincipal();
-        if(findByUsername(userUpdated.getUsername())==null){
+        boolean check=userDAO.isUserExist(userUpdated.getUsername());
+        if(!check){
             throw new UsernameNotFoundException(String.format("User '%s' not founded",user.getUsername()));
         }
+        userUpdated.setUsername(updatedUsername);
         userUpdated.setId(user.getId());
-        userDAO.update(userUpdated);
-        return findByUsername(user.getUsername());
+        userDAO.updateUser(userUpdated);
+        return userUpdated;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user=findByUsername(username);
-        if(user==null){
+        boolean check=userDAO.isUserExist(username);
+        if(!check){
             throw new UsernameNotFoundException(String.format("User '%s' not founded",username));
         }
+        User user=findByUsername(username);
         return new ExtendUserDetails(user.getId(),user.getUsername(),user.getPassword(),user.getRoles());
     }
     private Collection<? extends GrantedAuthority> mapRolesToAth(Collection<Role> roles){
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).toList();
     }
+
+
 }

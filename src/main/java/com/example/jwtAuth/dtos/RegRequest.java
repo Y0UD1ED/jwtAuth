@@ -10,7 +10,7 @@ public class RegRequest {
     private String confirmPassword;
     private String email;
 
-    private Collection<Role> roles;
+
 
     public String getFirstName() {
         return firstName;
@@ -44,11 +44,4 @@ public class RegRequest {
         this.email = email;
     }
 
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
-    }
 }

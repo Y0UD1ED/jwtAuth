@@ -1,17 +1,15 @@
 package com.example.jwtAuth.models;
 
 public class Option {
-    Integer id;
-
     String option;
     Boolean correct;
+    Integer questionId;
 
-    public Integer getId() {
-        return this.id;
+    public Option() {
     }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public Option(String option, Boolean correct) {
+        this.option = option;
+        this.correct = correct;
     }
 
     public String getOption() {
@@ -28,5 +26,13 @@ public class Option {
 
     public void setCorrect(Boolean correct) {
         this.correct = correct;
+    }
+
+    public Integer getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Integer questionId) {
+        this.questionId = questionId;
     }
 }

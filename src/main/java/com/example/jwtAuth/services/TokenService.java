@@ -1,13 +1,10 @@
 package com.example.jwtAuth.services;
 
-import com.example.jwtAuth.authentications.JwtAuthentication;
 import com.example.jwtAuth.dao.TokenDAO;
-import com.example.jwtAuth.dtos.JwtResponse;
 import com.example.jwtAuth.models.ExtendUserDetails;
 import com.example.jwtAuth.models.Role;
 import com.example.jwtAuth.models.Token;
 import com.example.jwtAuth.utils.JwtTokenUtil;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,16 +27,16 @@ public class TokenService {
 
     public String generateRefreshToken(ExtendUserDetails user) {
         String refreshtoken = jwtTokenUtil.generateRefreshToken(user);
-
-        Token token = tokenDAO.show(user.getId());
-        if (token != null) {
+        boolean check= tokenDAO.isTokenExist(user.getId());
+        if (check) {
+            Token token = tokenDAO.getTokenByUserId(user.getId());
             token.setToken(refreshtoken);
-            tokenDAO.update(token);
+            tokenDAO.updateToken(token);
         } else {
             Token newToken = new Token();
             newToken.setUser_id(user.getId());
             newToken.setToken(refreshtoken);
-            tokenDAO.save(newToken);
+            tokenDAO.addToken(newToken);
         }
         return refreshtoken;
     }
@@ -47,8 +44,9 @@ public class TokenService {
     public String generateAccessToken(String refreshtoken) {
         String accessToken = null;
         ExtendUserDetails user = getUserFromToken(refreshtoken);
-        Token savedToken=tokenDAO.show(user.getId());
-        if (savedToken != null && savedToken.getToken().equals(refreshtoken)) {
+        boolean check= tokenDAO.isTokenExist(user.getId());
+        Token savedToken=tokenDAO.getTokenByUserId(user.getId());
+        if (check && savedToken.getToken().equals(refreshtoken)) {
            accessToken = jwtTokenUtil.generateToken(user);
         }
         return accessToken;
@@ -62,6 +60,6 @@ public class TokenService {
     }
 
     public void deleteToken(Integer id) {
-        tokenDAO.delete(id);
+        tokenDAO.deleteToken(id);
     }
 }

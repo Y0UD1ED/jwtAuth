@@ -3,7 +3,6 @@ package com.example.jwtAuth.models;
 public class Course {
     Integer id;
 
-    Integer scores;
     String name;
     String description;
 
@@ -19,13 +18,6 @@ public class Course {
         this.id = id;
     }
 
-    public Integer getScores() {
-        return scores;
-    }
-
-    public void setScores(Integer scores) {
-        this.scores = scores;
-    }
 
     public String getName() {
         return name;

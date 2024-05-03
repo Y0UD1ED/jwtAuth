@@ -13,7 +13,7 @@ public class LevelDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Level findById(int id) {
+    public Level getById(int id) {
         String sql = "SELECT * FROM levels WHERE id =?";
         return jdbcTemplate.query(sql, (rs,rowNum) ->{
             Level level=new Level();

@@ -15,11 +15,15 @@ public class InfoModuleService {
     }
 
     public List<InfoModule> findByCourseId(Integer moduleId){
-        return infoModuleDAO.findByCourseId(moduleId);
+        return infoModuleDAO.getByCourseId(moduleId);
     }
     public void save(List<InfoModule> infoModule){
         for(InfoModule infoModule1:infoModule){
-            infoModuleDAO.save(infoModule1);
+            infoModuleDAO.addInfoModule(infoModule1);
         }
+    }
+
+    public void saveOneInfoModule(InfoModule infoModule){
+        infoModuleDAO.addInfoModule(infoModule);
     }
 }

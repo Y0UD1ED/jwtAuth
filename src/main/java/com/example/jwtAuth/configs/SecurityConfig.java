@@ -26,7 +26,6 @@ import java.util.concurrent.Executor;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-@EnableAsync
 @ComponentScan
 @EnableWebSecurity
 public class SecurityConfig {
@@ -52,7 +51,8 @@ public class SecurityConfig {
                         .requestMatchers("/user").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/unsecured").authenticated()
                         .requestMatchers("/getRefreshToken").authenticated()
-                        .requestMatchers("/update_user").authenticated()
+                        .requestMatchers("/user/update").authenticated()
+                        .requestMatchers("/addCourse").authenticated()
                         .requestMatchers("logout").authenticated()
                         .requestMatchers("/wait").permitAll()
                         .anyRequest().permitAll()

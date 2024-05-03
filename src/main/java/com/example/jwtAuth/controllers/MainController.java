@@ -46,16 +46,6 @@ public class MainController {
         return "securedData!";
     }
 
-    @GetMapping("/wait")
-    public ResponseEntity<?> waiting(AuthService authService){
-        try {
-            CompletableFuture<String> res= authService.tryAs();
-            CompletableFuture<String> res1= authService.tryAs2();
-            return new ResponseEntity<>("The async example worked perfectly!", HttpStatus.OK);
 
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
 
-    }
 }

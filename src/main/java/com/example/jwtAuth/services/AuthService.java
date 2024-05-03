@@ -11,16 +11,17 @@ import com.example.jwtAuth.utils.JwtTokenUtil;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-@EnableAsync
 public class AuthService {
 
 
@@ -41,11 +42,11 @@ public class AuthService {
     }
 
     public JwtResponse login(JwtRequest authRequest){
-        Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(),authRequest.getPassword()));
-        ExtendUserDetails user= (ExtendUserDetails) authentication.getPrincipal();
-        String accessToken=tokenService.generateAccessToken(user);
-        String refreshToken= tokenService.generateRefreshToken(user);
-        return new JwtResponse(accessToken,refreshToken);
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+        ExtendUserDetails user = (ExtendUserDetails) authentication.getPrincipal();
+        String accessToken = tokenService.generateAccessToken(user);
+        String refreshToken = tokenService.generateRefreshToken(user);
+        return new JwtResponse(accessToken, refreshToken);
     }
 
     public JwtResponse getAccessToken(RefreshJwtRequest authRequest) {
@@ -61,7 +62,12 @@ public class AuthService {
 
     }
 
-    public JwtResponse regUser(User user) {
+    public JwtResponse regUser(User user, String password, String confirmPassword) throws AuthenticationException {
+        if(!password.equals(confirmPassword)){
+            System.out.println(confirmPassword+" "+password);
+            throw new RuntimeException("Passwords do not match");
+
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         ExtendUserDetails userDetails = userService.createUser(user);
         String accessToken=tokenService.generateAccessToken(userDetails);
@@ -69,19 +75,6 @@ public class AuthService {
         return new JwtResponse(accessToken, refreshToken);
     }
 
-    @Async("asyncTaskExecutor")
-    public CompletableFuture<String> tryAs() throws InterruptedException {
-        System.out.println(Thread.currentThread().getName());
-        Thread.sleep(5000L);
-        return CompletableFuture.completedFuture("ok");
-    }
-
-    @Async("asyncTaskExecutor")
-    public CompletableFuture<String> tryAs2() throws InterruptedException {
-        System.out.println(Thread.currentThread().getName());
-        Thread.sleep(5000L);
-        return CompletableFuture.completedFuture("ok");
-    }
 
     public void logout() {
        ExtendUserDetails user=getUserFromContext();

@@ -2,6 +2,7 @@ package com.example.jwtAuth.mappers;
 
 import com.example.jwtAuth.dtos.RegRequest;
 import com.example.jwtAuth.dtos.UserDto;
+import com.example.jwtAuth.dtos.UserUpdateDto;
 import com.example.jwtAuth.models.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,6 +23,9 @@ public interface UserMapper {
     public User userDtoToUser(UserDto userDto);
 
     @Mapping(source = "email", target = "username")
-    @Mapping(source = "roles", target = "roles")
     public User RegRequestToUser(RegRequest regRequest);
+
+    @Mapping(source = "email", target = "username")
+    @Mapping(target = "photo", ignore = true)
+    public User UserUpdateDtoToUser(UserUpdateDto userUpdateDto);
 }

@@ -14,7 +14,7 @@ public class User {
     private String DoW;
     private String phone;
     private String city;
-    private String company;
+    private String job;
     private String photo;
     private Integer scores;
 
@@ -108,12 +108,12 @@ public class User {
         this.city = city;
     }
 
-    public String getCompany() {
-        return company;
+    public String getJob() {
+        return job;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setJob(String job) {
+        this.job = job;
     }
 
 
