@@ -4,7 +4,7 @@ import java.util.List;
 
 public class RoadMapResponse {
     String direction;
-    List<CourseMapDto> courses;
+    List<CourseMapDtoDel> courses;
     Integer passing;
 
     public String getDirection() {
@@ -15,11 +15,11 @@ public class RoadMapResponse {
         this.direction = direction;
     }
 
-    public List<CourseMapDto> getCourses() {
+    public List<CourseMapDtoDel> getCourses() {
         return courses;
     }
 
-    public void setCourses(List<CourseMapDto> courses) {
+    public void setCourses(List<CourseMapDtoDel> courses) {
         this.courses = courses;
     }
 

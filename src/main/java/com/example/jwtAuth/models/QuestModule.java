@@ -13,6 +13,8 @@ public class QuestModule {
     String name;
 
     List<Test> tests;
+
+
     public Integer getCourseId() {
         return courseId;
     }

@@ -2,6 +2,7 @@ package com.example.jwtAuth.dao;
 
 import com.example.jwtAuth.models.Course;
 import com.example.jwtAuth.models.Direction;
+import com.example.jwtAuth.models.InfoModule;
 import com.example.jwtAuth.models.Level;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -59,6 +60,8 @@ public class CourseDAO {
         //jdbcTemplate.update(sql,course.getName(),course.getDescription(),authorId,course.getDirection().getId(),course.getLevel().getId());
         return (Integer) simpleJdbcInsert.executeAndReturnKey(parameters);
     }
+
+
     public void updateCourse(Course course){
         String sql="UPDATE courses SET name=(?), SET description=(?) WHERE id=(?)";
         jdbcTemplate.update(sql,course.getName(),course.getDescription(),course.getId());

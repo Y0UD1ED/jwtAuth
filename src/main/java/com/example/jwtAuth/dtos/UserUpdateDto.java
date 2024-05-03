@@ -1,16 +1,8 @@
 package com.example.jwtAuth.dtos;
 
-import com.example.jwtAuth.models.Direction;
-import com.example.jwtAuth.models.Level;
-import com.example.jwtAuth.models.Role;
-
-import java.util.Collection;
-
 public class UserUpdateDto {
-    Integer id;
-
     String firstName;
-    String secondName;
+    String lastName;
     String middleName;
     String DoB;
     String DoW;
@@ -19,23 +11,6 @@ public class UserUpdateDto {
     String email;
     String phone;
 
-    String updatedEmail;
-
-    public String getUpdatedEmail() {
-        return updatedEmail;
-    }
-
-    public void setUpdatedEmail(String updatedEmail) {
-        this.updatedEmail = updatedEmail;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -45,12 +20,12 @@ public class UserUpdateDto {
         this.firstName = firstName;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getMiddleName() {

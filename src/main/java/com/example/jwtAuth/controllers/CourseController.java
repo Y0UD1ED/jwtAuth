@@ -32,18 +32,7 @@ public class CourseController {
 
     @PostMapping("/addCourse")
     public void addCourse(@RequestBody CourseRequest course) {
-        Course course1 = new Course();
-        course1.setName(course.getName());
-        course1.setLevel(new Level(course.getLevelId()));
-        course1.setDirection(new Direction(course.getDirectionId()));
-        course1.setDescription(course.getDescription());
-        Integer courseId=courseService.save(course1);
-        /*InfoModule courseInfoModule = new InfoModule();
-        courseInfoModule.setCourseId(courseId);
-        courseInfoModule.setContentType("text");
-        courseInfoModule.setContentPosition(1);
-        courseInfoModule.setContent(course.getInfoModuleText());
-        infoModuleService.saveOneInfoModule(courseInfoModule);*/
+       courseService.addNewCourse(course);
     }
 
     @GetMapping("/getCoursesByLevel/{levelId}")
@@ -70,18 +59,6 @@ public class CourseController {
     public ResponseEntity<?> getCourseQuestModule(@PathVariable(value = "questModuleId") Integer questModuleId) {
         return ResponseEntity.ok(questModuleService.findQuestModuleById(questModuleId));
     }
-
-
-    @PostMapping("/addInfoModule")
-    public void addInfoModule(@RequestBody List<InfoModule> infoModule) {
-        infoModuleService.save(infoModule);
-    }
-
-    /*@GetMapping("/getCourses/{id}/quest_module")
-    public ResponseEntity<?> getCourseQuestModule(@PathVariable(value = "id") Integer id) {
-        return ResponseEntity.ok(testsService.findByQuestModuleId(id));
-
-    }*/
 
     @PostMapping("/addQuestModule")
     public void addQuestModule(@RequestBody QuestModule questModule) {

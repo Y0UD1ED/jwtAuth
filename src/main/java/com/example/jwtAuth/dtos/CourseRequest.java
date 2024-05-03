@@ -1,5 +1,7 @@
 package com.example.jwtAuth.dtos;
 
+import java.util.List;
+
 public class CourseRequest {
     Integer directionId;
     Integer levelId;
@@ -7,6 +9,8 @@ public class CourseRequest {
     String infoModuleText;
 
     String description;
+
+    List<Integer> userIds;
 
     public Integer getDirectionId() {
         return directionId;
@@ -48,4 +52,13 @@ public class CourseRequest {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public List<Integer> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<Integer> userIds) {
+        this.userIds = userIds;
+    }
 }
+

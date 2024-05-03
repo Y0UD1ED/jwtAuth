@@ -1,5 +1,7 @@
 package com.example.jwtAuth.models;
 
+import java.util.List;
+
 public class Course {
     Integer id;
 
@@ -9,6 +11,19 @@ public class Course {
     Level level;
     Direction direction;
 
+    InfoModule infoModule;
+
+    List<QuestModule> questModules;
+
+    public Course() {
+    }
+
+    public Course(String name, String description, Level level, Direction direction) {
+        this.name = name;
+        this.description = description;
+        this.level = level;
+        this.direction = direction;
+    }
 
     public Integer getId() {
         return id;
@@ -49,5 +64,21 @@ public class Course {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public InfoModule getInfoModule() {
+        return infoModule;
+    }
+
+    public void setInfoModule(InfoModule infoModule) {
+        this.infoModule = infoModule;
+    }
+
+    public List<QuestModule> getQuestModules() {
+        return questModules;
+    }
+
+    public void setQuestModules(List<QuestModule> questModules) {
+        this.questModules = questModules;
     }
 }

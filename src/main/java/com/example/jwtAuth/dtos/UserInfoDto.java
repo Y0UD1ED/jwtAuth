@@ -1,15 +1,13 @@
 package com.example.jwtAuth.dtos;
 
-import com.example.jwtAuth.models.Direction;
-import com.example.jwtAuth.models.Level;
 import com.example.jwtAuth.models.Role;
 
 import java.util.Collection;
 
-public class UserDto {
+public class UserInfoDto {
     Integer id;
     String firstName;
-    String secondName;
+    String lastName;
     String middleName;
     String DoB;
     String DoW;
@@ -24,7 +22,7 @@ public class UserDto {
     Integer balance;
     Collection<Role> roles;
 
-    public UserDto() {
+    public UserInfoDto() {
     }
 
     public Integer getId() {
@@ -43,12 +41,12 @@ public class UserDto {
         this.firstName = firstName;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getMiddleName() {

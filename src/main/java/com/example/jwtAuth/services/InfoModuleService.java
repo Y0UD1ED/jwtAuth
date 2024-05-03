@@ -17,13 +17,9 @@ public class InfoModuleService {
     public List<InfoModule> findByCourseId(Integer moduleId){
         return infoModuleDAO.getByCourseId(moduleId);
     }
-    public void save(List<InfoModule> infoModule){
-        for(InfoModule infoModule1:infoModule){
-            infoModuleDAO.addInfoModule(infoModule1);
-        }
+    public void save(InfoModule infoModule,Integer courseId){
+        infoModuleDAO.addInfoModule(infoModule,courseId);
+
     }
 
-    public void saveOneInfoModule(InfoModule infoModule){
-        infoModuleDAO.addInfoModule(infoModule);
-    }
 }

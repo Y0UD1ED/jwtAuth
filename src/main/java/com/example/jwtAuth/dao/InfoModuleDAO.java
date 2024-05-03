@@ -27,9 +27,9 @@ public class InfoModuleDAO {
         },courseId).stream().toList();
    }
 
-   public void addInfoModule(InfoModule infoModule){
+   public void addInfoModule(InfoModule infoModule,Integer courseId){
         String sql="INSERT INTO info_modules (course_id, position, content,type) VALUES (?,?,?,?)";
-        jdbcTemplate.update(sql,infoModule.getCourseId(), infoModule.getContentPosition(),infoModule.getContent(),infoModule.getContentType());
+        jdbcTemplate.update(sql,courseId, infoModule.getContentPosition(),infoModule.getContent(),infoModule.getContentType());
 
    }
 

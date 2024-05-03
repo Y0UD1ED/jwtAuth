@@ -1,2 +1,30 @@
-package com.example.jwtAuth.dtos;public class ShortCourseDto {
+package com.example.jwtAuth.dtos;
+
+public class ShortCourseDto {
+    Integer id;
+    String name;
+
+    public ShortCourseDto() {
+    }
+
+    public ShortCourseDto(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

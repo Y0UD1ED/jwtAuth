@@ -81,15 +81,5 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean(name = "asyncTaskExecutor")
-    public TaskExecutor asyncTaskExecutor() {
-        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setCorePoolSize(4);
-        taskExecutor.setQueueCapacity(150);
-        taskExecutor.setMaxPoolSize(4);
-        taskExecutor.setThreadNamePrefix("AsyncTaskThread-");
-        taskExecutor.initialize();
-        return new DelegatingSecurityContextAsyncTaskExecutor(taskExecutor);
-    }
 
 }

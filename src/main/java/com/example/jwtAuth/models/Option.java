@@ -3,7 +3,7 @@ package com.example.jwtAuth.models;
 public class Option {
     String option;
     Boolean correct;
-    Integer questionId;
+
 
     public Option() {
     }
@@ -28,11 +28,5 @@ public class Option {
         this.correct = correct;
     }
 
-    public Integer getQuestionId() {
-        return questionId;
-    }
 
-    public void setQuestionId(Integer questionId) {
-        this.questionId = questionId;
-    }
 }

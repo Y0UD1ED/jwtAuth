@@ -10,6 +10,11 @@ public class Level {
         this.id = id;
     }
 
+    public Level(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }

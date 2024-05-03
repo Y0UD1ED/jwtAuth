@@ -55,5 +55,10 @@ public class AssignmentService {
     }
 
 
-
+    public void setCourseForUsers(List<Integer> userIds, int courseId) {
+        for (Integer userId : userIds) {
+            userDAO.setUserCourse(userId, courseId);
+        }
+    }
 }
+

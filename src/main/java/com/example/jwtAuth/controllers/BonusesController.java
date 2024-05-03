@@ -21,11 +21,17 @@ public class BonusesController {
         bonusesService.addBonus(bonuses);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/all")
     public List<Bonus> getAllBonuses() {
+        //mapper
         return bonusesService.getAllBonuses();
     }
 
+    @GetMapping("/{id}")
+    public Bonus getBonus(@PathVariable("id") Integer id) {
+        //mapper
+        return bonusesService.getBonusById(id);
+    }
     @PostMapping("/{id}/buy")
     public void buyBonus(@PathVariable("id") int id) {
         bonusesService.buyBonus(id);

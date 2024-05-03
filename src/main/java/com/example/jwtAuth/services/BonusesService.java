@@ -38,6 +38,10 @@ public class BonusesService {
         return bonuses;
     }
 
+    public Bonus getBonusById(Integer bonusId) {
+        return bonusesDAO.getBonusById(bonusId);
+    }
+
     private boolean isFirstBonus(int bonusId, int userId) {
         return !usersBonusesDAO.check(userId, bonusId);
     }

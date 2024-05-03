@@ -1,7 +1,7 @@
 package com.example.jwtAuth.mappers;
 
 import com.example.jwtAuth.dtos.RegRequest;
-import com.example.jwtAuth.dtos.UserDto;
+import com.example.jwtAuth.dtos.UserInfoDto;
 import com.example.jwtAuth.dtos.UserUpdateDto;
 import com.example.jwtAuth.models.User;
 import org.mapstruct.Mapper;
@@ -11,21 +11,21 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
 
 
-    @Mapping(source = "username", target = "email")
+    @Mapping(source = "login", target = "email")
     @Mapping(source = "roles", target = "roles")
     @Mapping(source = "currentLevel",target = "currentLevel")
-    public UserDto userToUserDto(User user);
+    public UserInfoDto userToUserDto(User user);
 
-    @Mapping(source = "email", target = "username")
+    @Mapping(source = "email", target = "login")
     @Mapping(source = "roles", target = "roles")
     @Mapping(source = "doW", target = "doW")
     @Mapping(source = "currentLevel",target = "currentLevel")
-    public User userDtoToUser(UserDto userDto);
+    public User userDtoToUser(UserInfoDto userInfoDto);
 
-    @Mapping(source = "email", target = "username")
+    @Mapping(source = "email", target = "login")
     public User RegRequestToUser(RegRequest regRequest);
 
-    @Mapping(source = "email", target = "username")
+    @Mapping(source = "email", target = "login")
     @Mapping(target = "photo", ignore = true)
     public User UserUpdateDtoToUser(UserUpdateDto userUpdateDto);
 }

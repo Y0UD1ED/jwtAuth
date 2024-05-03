@@ -1,6 +1,6 @@
 package com.example.jwtAuth.dtos;
 
-public class CourseMapDto {
+public class CourseMapDtoDel {
   Integer courseId;
   String courseName;
 
@@ -23,10 +23,10 @@ public class CourseMapDto {
         this.totalScore = totalScore;
     }
 
-    public CourseMapDto() {
+    public CourseMapDtoDel() {
 
     }
-    public CourseMapDto(Integer courseId, String courseName) {
+    public CourseMapDtoDel(Integer courseId, String courseName) {
         this.courseId = courseId;
         this.courseName = courseName;
     }

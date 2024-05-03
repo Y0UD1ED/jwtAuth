@@ -11,6 +11,10 @@ public class Direction {
         this.id = id;
     }
 
+    public Direction(String name) {
+        this.name = name;
+    }
+
     public Direction(Integer id, String name) {
         this.id = id;
         this.name = name;

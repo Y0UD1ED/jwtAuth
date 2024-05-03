@@ -1,13 +1,13 @@
 package com.example.jwtAuth.models;
 
 import java.util.Collection;
+import java.util.List;
 
 public class User {
     private Integer id;
-    private String username;
+    private String login;
     private String password;
-    private Collection<Role> roles;
-    private String secondName;
+    private String lastName;
     private String firstName;
     private String middleName;
     private String DoB;
@@ -16,10 +16,15 @@ public class User {
     private String city;
     private String job;
     private String photo;
-    private Integer scores;
+    private Integer balance;
 
+    private Collection<Role> roles;
     private Level currentLevel;
     private Direction direction;
+
+    private List<UserCourse> courses;
+
+    private List<Bonus> bonuses;
     public Integer getId() {
         return id;
     }
@@ -28,12 +33,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getLogin() {
+        return login;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {
@@ -52,12 +57,12 @@ public class User {
         this.roles = roles;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getFirstName() {
@@ -125,12 +130,12 @@ public class User {
         this.photo = photo;
     }
 
-    public Integer getScores() {
-        return scores;
+    public Integer getBalance() {
+        return balance;
     }
 
-    public void setScores(Integer scores) {
-        this.scores = scores;
+    public void setBalance(Integer balance) {
+        this.balance = balance;
     }
 
     public Level getCurrentLevel() {
@@ -147,5 +152,21 @@ public class User {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public List<UserCourse> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<UserCourse> courses) {
+        this.courses = courses;
+    }
+
+    public List<Bonus> getBonuses() {
+        return bonuses;
+    }
+
+    public void setBonuses(List<Bonus> bonuses) {
+        this.bonuses = bonuses;
     }
 }
