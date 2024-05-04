@@ -14,6 +14,20 @@ public class UserCourse{
     InfoModule infoModule;
 
     List<UserQuestModule> questModules;
+
+
+    public UserCourse() {
+    }
+
+    public UserCourse(Course course) {
+        this.id = course.getId();
+        this.name = course.getName();
+        this.description = course.getDescription();
+        this.level = course.getLevel();
+        this.direction = course.getDirection();
+        this.infoModule = course.getInfoModule();
+    }
+
     public Integer getId() {
         return id;
     }

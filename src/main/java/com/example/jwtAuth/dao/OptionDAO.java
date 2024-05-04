@@ -26,9 +26,9 @@ public class OptionDAO {
         return results;
     }
 
-    public void addOption(Option option){
+    public void addOption(Option option,Integer questId){
         String sql="INSERT INTO options(option,correct,quest_id) VALUES(?,?,?)";
-        jdbcTemplate.update(sql,option.getOption(),option.getCorrect(),option.getQuestionId());
+        jdbcTemplate.update(sql,option.getOption(),option.getCorrect(),questId);
     }
 
     public void deleteOption(Integer questId){

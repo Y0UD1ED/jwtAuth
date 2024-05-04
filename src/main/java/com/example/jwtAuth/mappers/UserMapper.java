@@ -13,14 +13,16 @@ public interface UserMapper {
 
     @Mapping(source = "login", target = "email")
     @Mapping(source = "roles", target = "roles")
-    @Mapping(source = "currentLevel",target = "currentLevel")
-    public UserInfoDto userToUserDto(User user);
+    @Mapping(target = "currentLevel", ignore = true)
+    @Mapping(target = "direction", ignore = true)
+    public UserInfoDto userToUserInfoDto(User user);
 
     @Mapping(source = "email", target = "login")
     @Mapping(source = "roles", target = "roles")
     @Mapping(source = "doW", target = "doW")
-    @Mapping(source = "currentLevel",target = "currentLevel")
-    public User userDtoToUser(UserInfoDto userInfoDto);
+    @Mapping(target = "currentLevel", ignore = true)
+    @Mapping(target = "direction", ignore = true)
+    public User userInfoDtoToUser(UserInfoDto userInfoDto);
 
     @Mapping(source = "email", target = "login")
     public User RegRequestToUser(RegRequest regRequest);

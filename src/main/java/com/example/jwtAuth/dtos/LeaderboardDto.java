@@ -1,6 +1,6 @@
 package com.example.jwtAuth.dtos;
 
-public class PassingDto {
+public class LeaderboardDto {
     Integer userId;
 
     Integer courseId;

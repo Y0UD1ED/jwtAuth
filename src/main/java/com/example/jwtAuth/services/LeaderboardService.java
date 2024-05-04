@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CoursePassingService {
+public class LeaderboardService {
     private final CoursePassingDAO coursePassingDAO;
 
-    public CoursePassingService(CoursePassingDAO coursePassingDAO) {
+    public LeaderboardService(CoursePassingDAO coursePassingDAO) {
         this.coursePassingDAO = coursePassingDAO;
     }
     public List<CoursePassing> findAllCoursePassingByLevelAndDirection(Integer level, Integer direction){

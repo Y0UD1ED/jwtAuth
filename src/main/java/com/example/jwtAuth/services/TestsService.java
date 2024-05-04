@@ -33,8 +33,7 @@ public class TestsService {
             Integer testId=testDAO.addTest(quest);
             for(Integer optionId:quest.getOptionList().keySet()){
                 Option option = quest.getOptionList().get(optionId);
-                option.setQuestionId(testId);
-                optionDAO.addOption(option);
+                optionDAO.addOption(option,testId);
             }
 
         }

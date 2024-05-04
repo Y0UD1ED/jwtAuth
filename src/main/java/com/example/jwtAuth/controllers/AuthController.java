@@ -12,8 +12,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class AuthController {
@@ -38,7 +36,7 @@ public class AuthController {
             AuthResponse authResponse=new AuthResponse();
             authResponse.setTokens(authService.login(authRequest));
             User user=userService.findByUsername(authRequest.getUsername());
-            UserInfoDto userInfoDto =userMapper.userToUserDto(user);
+            UserInfoDto userInfoDto =userMapper.userToUserInfoDto(user);
             authResponse.setUserId(user.getId());
             authResponse.setRoles(user.getRoles());
             return ResponseEntity.ok(authResponse);

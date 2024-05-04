@@ -6,6 +6,7 @@ import com.example.jwtAuth.dtos.UserInfoDto;
 import com.example.jwtAuth.dtos.UserUpdateDto;
 import com.example.jwtAuth.exceptions.AppError;
 import com.example.jwtAuth.mappers.UserMapper;
+import com.example.jwtAuth.models.Bonus;
 import com.example.jwtAuth.models.User;
 import com.example.jwtAuth.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @RestController
@@ -35,7 +38,7 @@ public class UserController {
         try{
             User user=userMapper.UserUpdateDtoToUser(userDto);
             User userUpdated =userService.updateUser(user);
-            UserInfoDto userInfoDtoUpdated =userMapper.userToUserDto(userUpdated);
+            UserInfoDto userInfoDtoUpdated =userMapper.userToUserInfoDto(userUpdated);
             return ResponseEntity.ok(userInfoDtoUpdated);
         }catch (UsernameNotFoundException e){
             return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(),"Пользователь не найден"),HttpStatus.NOT_FOUND);
@@ -45,7 +48,7 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createUser(@RequestBody UserInfoDto userInfoDto){
-            User user=userMapper.userDtoToUser(userInfoDto);
+            User user=userMapper.userInfoDtoToUser(userInfoDto);
             String password=generatePassword(10);
             user.setPassword(passwordEncoder.encode(password));
             userService.createFullUser(user);
@@ -67,5 +70,32 @@ public class UserController {
     @GetMapping("/courseMap/{levelId}")
     public ResponseEntity<?> getCourseMap(@PathVariable("levelId") int levelId){
         return ResponseEntity.ok(userService.getCourseMap(levelId));
+    }
+
+    @GetMapping("/course/{id}")
+    public ResponseEntity<?> getCourse(@PathVariable("id") int courseId){
+        return ResponseEntity.ok(userService.getUserCourse(courseId));
+    }
+
+    @PostMapping("/questModule/{id}/pass")
+    public ResponseEntity<?> passQuestModule(@PathVariable(value = "id") Integer id, @RequestBody Map<Integer,Integer> answers) {
+        Integer result=0;
+        try{
+            result=userService.passQuestModule(id,answers);
+            return ResponseEntity.ok(result);
+        }catch (Exception e){
+            return new ResponseEntity<>(new AppError(HttpStatus.FORBIDDEN.value(),e.getMessage()),HttpStatus.FORBIDDEN);
+        }
+
+    }
+
+    @PostMapping("/bonuses/{id}/buy")
+    public void buyBonus(@PathVariable("id") int id) {
+        userService.buyBonus(id);
+    }
+
+    @GetMapping("/bonuses/my")
+    public List<Bonus> getMyBonuses() {
+        return userService.getMyBonuses();
     }
 }

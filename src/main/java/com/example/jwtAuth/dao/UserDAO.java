@@ -151,12 +151,14 @@ public class UserDAO {
     }
 
     public List<UserQuestModule> getUserQuestModules(Integer courseId, Integer userId) {
-        String sql="SELECT qm.scores total_scores,qmp.scores user_scores \n" +
+        String sql="SELECT qm.id,qm.name, qm.scores total_scores,qmp.scores user_scores \n" +
                 "FROM quest_modules as qm\n" +
                 "JOIN quest_modules_passing as qmp ON qmp.quest_module_id=qm.id AND qmp.user_id=?\n" +
                 "WHERE qm.course_id=?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             UserQuestModule userQuestModule=new UserQuestModule();
+            userQuestModule.setQuestModuleId(rs.getInt("id"));
+            userQuestModule.setName(rs.getString("name"));
             userQuestModule.setScores(rs.getInt("total_scores"));
             userQuestModule.setUserScore(rs.getInt("user_scores"));
             return userQuestModule;
@@ -173,6 +175,57 @@ public class UserDAO {
             return new Pair<>(rs.getInt("user_scores"),rs.getInt("total_scores"));
         },userId,courseId);
     }
+
+
+    public boolean isUserPassedTest(Integer moduleId, Integer userId) {
+        String sql="SELECT COUNT(*) FROM quest_modules_passing WHERE quest_module_id=? AND user_id=?";
+        return jdbcTemplate.queryForObject(sql,Integer.class,moduleId,userId)>0;
+    }
+
+    public void addUserQuestModule(Integer userId, Integer moduleId, Integer score) {
+        String sql="INSERT INTO quest_modules_passing (user_id,quest_module_id,scores) VALUES (?,?,?)";
+        jdbcTemplate.update(sql,userId,moduleId,score);
+    }
+
+    public User getUserById(Integer userId) {
+        String sql = "SELECT * FROM users WHERE id=?";
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+            User user = new User();
+            user.setId(rs.getInt("id"));
+            user.setLogin(rs.getString("login"));
+            user.setPassword(rs.getString("password"));
+            user.setFirstName(rs.getString("first_name"));
+            user.setLastName(rs.getString("last_name"));
+            user.setMiddleName(rs.getString("middle_name"));
+            user.setCity(rs.getString("city"));
+            user.setJob(rs.getString("job"));
+            user.setDoB(rs.getString("dob"));
+            user.setDoW(rs.getString("dow"));
+            user.setPhone(rs.getString("phone"));
+            user.setBalance(rs.getInt("scores"));
+            return user;
+        }, userId);
+    }
+
+    public void addBonus(Integer userId, int bonusId) {
+        String sql="INSERT INTO users_bonuses (user_id,bonus_id,count) VALUES (?,?,?)";
+        jdbcTemplate.update(sql,userId,bonusId,1);
+    }
+
+    public List<Bonus> getUserBonuses(Integer userId) {
+        String sql = "SELECT bonuses.id,bonuses.name,bonuses.description,bonuses.price,users_bonuses.count " +
+                "FROM users_bonuses\n" +
+                "JOIN bonuses ON users_bonuses.bonus_id=bonuses.id\n" +
+                "WHERE users_bonuses.user_id=?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Bonus bonus = new Bonus();
+            bonus.setId(rs.getInt("id"));
+            bonus.setName(rs.getString("name"));
+            bonus.setDescription(rs.getString("description"));
+            bonus.setPrice(rs.getInt("price"));
+            bonus.setCount(rs.getInt("count"));
+            return bonus;
+        }, userId);
     }
 
 }
