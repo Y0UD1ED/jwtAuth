@@ -67,35 +67,8 @@ public class UserController {
         return sb.toString();
     }
 
-    @GetMapping("/courseMap/{levelId}")
-    public ResponseEntity<?> getCourseMap(@PathVariable("levelId") int levelId){
-        return ResponseEntity.ok(userService.getCourseMap(levelId));
-    }
 
-    @GetMapping("/course/{id}")
-    public ResponseEntity<?> getCourse(@PathVariable("id") int courseId){
-        return ResponseEntity.ok(userService.getUserCourse(courseId));
-    }
 
-    @PostMapping("/questModule/{id}/pass")
-    public ResponseEntity<?> passQuestModule(@PathVariable(value = "id") Integer id, @RequestBody Map<Integer,Integer> answers) {
-        Integer result=0;
-        try{
-            result=userService.passQuestModule(id,answers);
-            return ResponseEntity.ok(result);
-        }catch (Exception e){
-            return new ResponseEntity<>(new AppError(HttpStatus.FORBIDDEN.value(),e.getMessage()),HttpStatus.FORBIDDEN);
-        }
 
-    }
 
-    @PostMapping("/bonuses/{id}/buy")
-    public void buyBonus(@PathVariable("id") int id) {
-        userService.buyBonus(id);
-    }
-
-    @GetMapping("/bonuses/my")
-    public List<Bonus> getMyBonuses() {
-        return userService.getMyBonuses();
-    }
 }

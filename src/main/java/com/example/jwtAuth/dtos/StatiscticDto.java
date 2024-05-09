@@ -1,13 +1,13 @@
 package com.example.jwtAuth.dtos;
 
-import java.util.List;
-
-public class LeaderboardDto {
+public class StatiscticDto {
     Integer userId;
     String firstName;
     String lastName;
-    List<ShortCourseDto> usersCourses;
-    Integer score;
+
+    String middleName;
+    String level;
+    Integer scores;
 
     public Integer getUserId() {
         return userId;
@@ -33,19 +33,27 @@ public class LeaderboardDto {
         this.lastName = lastName;
     }
 
-    public List<ShortCourseDto> getUsersCourses() {
-        return usersCourses;
+    public String getMiddleName() {
+        return middleName;
     }
 
-    public void setUsersCourses(List<ShortCourseDto> usersCourses) {
-        this.usersCourses = usersCourses;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
-    public Integer getScore() {
-        return score;
+    public String getLevel() {
+        return level;
     }
 
-    public void setScore(Integer score) {
-        this.score = score;
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public Integer getScores() {
+        return scores;
+    }
+
+    public void setScores(Integer scores) {
+        this.scores = scores;
     }
 }

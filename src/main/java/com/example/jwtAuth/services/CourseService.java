@@ -32,7 +32,7 @@ public class CourseService {
         infoModule.setContentPosition(1);
         infoModule.setContent(course.getInfoModuleText());
         infoModuleService.save(infoModule, courseId);
-        assignmentService.setCourseForUsers(course.getUserIds(),courseId);
+        assignmentService.assignCourseForUsers(course.getUserIds(),courseId);
 
     }
 

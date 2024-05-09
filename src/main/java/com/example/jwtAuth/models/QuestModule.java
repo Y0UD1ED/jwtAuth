@@ -5,8 +5,7 @@ import java.util.List;
 
 public class QuestModule {
 
-    Integer questModuleId;
-    Integer courseId;
+    Integer id;
     Integer scores;
     Integer position;
 
@@ -14,14 +13,6 @@ public class QuestModule {
 
     List<Test> tests;
 
-
-    public Integer getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(Integer courseId) {
-        this.courseId = courseId;
-    }
 
     public Integer getScores() {
         return scores;
@@ -48,12 +39,12 @@ public class QuestModule {
         this.name = name;
     }
 
-    public Integer getQuestModuleId() {
-        return questModuleId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setQuestModuleId(Integer questModuleId) {
-        this.questModuleId = questModuleId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public List<Test> getTests() {

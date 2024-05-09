@@ -38,8 +38,8 @@ public class CourseController {
     }
 
     @PostMapping("/addQuestModule")
-    public void addQuestModule(@RequestBody QuestModule questModule) {
-        questModuleService.saveQuestModule(questModule);
+    public void addQuestModule(@RequestBody QuestModule questModule,@RequestBody Integer courseId) {
+        questModuleService.saveQuestModule(questModule,courseId);
     }
 
 

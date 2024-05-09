@@ -18,8 +18,7 @@ public class InfoModuleDAO {
         String sql="SELECT * FROM info_modules WHERE course_id=(?) ORDER BY position";
         return jdbcTemplate.query(sql,(rs, rowNum) -> {
             InfoModule infoModule= new InfoModule();
-            infoModule.setInfoId(rs.getInt("id"));
-            infoModule.setCourseId(courseId);
+            infoModule.setId(rs.getInt("id"));
             infoModule.setContent(rs.getString("content"));
             infoModule.setContentType(rs.getString("type"));
             infoModule.setContentPosition(rs.getInt("position"));
@@ -34,8 +33,8 @@ public class InfoModuleDAO {
    }
 
     public void updateInfoModule(InfoModule infoModule){
-        String sql="UPDATE info_modules SET course_id=?, content=?,type=? ,order=? WHERE id=(?)";
-        jdbcTemplate.update(sql,infoModule.getCourseId(),infoModule.getContent(),infoModule.getContentType(),infoModule.getContentPosition(),infoModule.getCourseId());
+        String sql="UPDATE info_modules SET content=?,type=? ,order=? WHERE id=(?)";
+        jdbcTemplate.update(sql,infoModule.getContent(),infoModule.getContentType(),infoModule.getContentPosition(),infoModule.getId());
     }
 
 

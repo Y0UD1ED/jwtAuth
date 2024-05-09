@@ -17,19 +17,21 @@ public class QuestModuleService {
         this.testsService = testsService;
     }
     public QuestModule findQuestModuleById(Integer id) {
-        QuestModule questModule = questModuleDAO.getQuestModulesById(id);
+        QuestModule questModule = questModuleDAO.getQuestModuleById(id);
         questModule.setTests(testsService.findByQuestModuleId(id));
         return questModule;
     }
 
 
-    public void saveQuestModule(QuestModule questModule) {
-        Integer id=questModuleDAO.addQuestModule(questModule);
+    public void saveQuestModule(QuestModule questModule,Integer courseId) {
+        Integer id=questModuleDAO.addQuestModule(questModule,courseId);
         for(Test test:questModule.getTests()){
             test.setQuestModuleId(id);
         }
         testsService.save(questModule.getTests());
     }
+
+
 
 
 }

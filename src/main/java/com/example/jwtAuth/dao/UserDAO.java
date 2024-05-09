@@ -3,6 +3,7 @@ package com.example.jwtAuth.dao;
 
 import com.example.jwtAuth.models.*;
 import org.antlr.v4.runtime.misc.Pair;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
@@ -69,9 +70,18 @@ public class UserDAO {
         return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("id"), id);
     }
 
-    public List<Integer> getAllUsersIdByLevelAndDirection(Integer id, Integer id2) {
-        String sql = "SELECT id FROM users WHERE current_level =? AND direction_id =?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("id"), id, id2);
+    public List<User> getAllUsersByLevelAndDirection(Integer levelId, Integer directionId) {
+        String sql = "SELECT DISTINCT users.id,first_name,last_name FROM users "+
+                "JOIN users_courses ON users.id=users_courses.user_id "+
+                "JOIN courses ON users_courses.course_id=courses.id " +
+                "WHERE courses.level_id =? AND courses.direction_id =?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            User user = new User();
+            user.setId(rs.getInt("id"));
+            user.setFirstName(rs.getString("first_name"));
+            user.setLastName(rs.getString("last_name"));
+            return user;
+        }, levelId, directionId);
     }
 
     public Integer getUserId(String login) {
@@ -119,73 +129,16 @@ public class UserDAO {
 
 
     public void updateUser(User user) {
-        String sql = "UPDATE users SET first_name=?,second_name=?,middle_name=?,city=?,job=?,dob=?,dow=?,phone=?,login=? WHERE id=?";
+        String sql = "UPDATE users SET first_name=?,last_name=?,middle_name=?,city=?,job=?,dob=?,dow=?,phone=?,login=? WHERE id=?";
         jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(), user.getMiddleName(), user.getCity(), user.getJob(), user.getDoB(), user.getDoW(), user.getPhone(),user.getLogin(), user.getId());
     }
 
     public void updateUserBalance(Integer id, Integer balance) {
-        String sql = "UPDATE users SET scores=? WHERE id=?";
+        String sql = "UPDATE users SET balance=? WHERE id=?";
         jdbcTemplate.update(sql, balance, id);
 
     }
 
-
-    public void setUserCourse(Integer userId, int courseId) {
-        String sql="INSERT INTO users_courses (user_id,course_id) VALUES (?,?)";
-        jdbcTemplate.update(sql,userId,courseId);
-    }
-
-    public List<UserCourse> getUserCoursesByLevel(Integer id, int levelId) {
-        String sql="SELECT courses.id course_id,courses.name course_name, courses.direction_id, directions.name direction, quest_modules.scores total_scores,qmp.scores user_scores\n" +
-                "FROM users_courses\n" +
-                "JOIN courses ON users_courses.course_id=courses.id\n" +
-                "JOIN directions ON courses.direction_id=directions.id\n" +
-                "WHERE courses.level_id=? AND users_courses.user_id=?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            UserCourse userCourse=new UserCourse();
-            userCourse.setId(rs.getInt("course_id"));
-            userCourse.setName(rs.getString("course_name"));
-            userCourse.setDirection(new Direction(rs.getString("direction")));
-            return userCourse;
-        },id,levelId);
-    }
-
-    public List<UserQuestModule> getUserQuestModules(Integer courseId, Integer userId) {
-        String sql="SELECT qm.id,qm.name, qm.scores total_scores,qmp.scores user_scores \n" +
-                "FROM quest_modules as qm\n" +
-                "JOIN quest_modules_passing as qmp ON qmp.quest_module_id=qm.id AND qmp.user_id=?\n" +
-                "WHERE qm.course_id=?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            UserQuestModule userQuestModule=new UserQuestModule();
-            userQuestModule.setQuestModuleId(rs.getInt("id"));
-            userQuestModule.setName(rs.getString("name"));
-            userQuestModule.setScores(rs.getInt("total_scores"));
-            userQuestModule.setUserScore(rs.getInt("user_scores"));
-            return userQuestModule;
-        },userId,courseId);
-    }
-
-    public Pair<Integer,Integer> getUserQuestModuleScores(Integer courseId, Integer userId) {
-        String sql="SELECT SUM(qm.scores)  total_scores,COALESCE(SUM(qmp.scores),0)user_scores\n" +
-                "FROM quest_modules as qm\n" +
-                "LEFT JOIN quest_modules_passing as qmp ON qmp.quest_module_id=qm.id AND qmp.user_id=?\n" +
-                "WHERE qm.course_id=?\n" +
-                "GROUP BY qm.id";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
-            return new Pair<>(rs.getInt("user_scores"),rs.getInt("total_scores"));
-        },userId,courseId);
-    }
-
-
-    public boolean isUserPassedTest(Integer moduleId, Integer userId) {
-        String sql="SELECT COUNT(*) FROM quest_modules_passing WHERE quest_module_id=? AND user_id=?";
-        return jdbcTemplate.queryForObject(sql,Integer.class,moduleId,userId)>0;
-    }
-
-    public void addUserQuestModule(Integer userId, Integer moduleId, Integer score) {
-        String sql="INSERT INTO quest_modules_passing (user_id,quest_module_id,scores) VALUES (?,?,?)";
-        jdbcTemplate.update(sql,userId,moduleId,score);
-    }
 
     public User getUserById(Integer userId) {
         String sql = "SELECT * FROM users WHERE id=?";
@@ -202,30 +155,25 @@ public class UserDAO {
             user.setDoB(rs.getString("dob"));
             user.setDoW(rs.getString("dow"));
             user.setPhone(rs.getString("phone"));
-            user.setBalance(rs.getInt("scores"));
+            user.setBalance(rs.getInt("balance"));
             return user;
         }, userId);
     }
 
-    public void addBonus(Integer userId, int bonusId) {
-        String sql="INSERT INTO users_bonuses (user_id,bonus_id,count) VALUES (?,?,?)";
-        jdbcTemplate.update(sql,userId,bonusId,1);
-    }
 
-    public List<Bonus> getUserBonuses(Integer userId) {
-        String sql = "SELECT bonuses.id,bonuses.name,bonuses.description,bonuses.price,users_bonuses.count " +
-                "FROM users_bonuses\n" +
-                "JOIN bonuses ON users_bonuses.bonus_id=bonuses.id\n" +
-                "WHERE users_bonuses.user_id=?";
+    public List<User> getAllUsers() {
+        String sql="SELECT users.id,first_name,last_name,middle_name, levels.name FROM users " +
+                "JOIN levels ON levels.id=users.current_level "+
+                "JOIN users_roles ON users.id=users_roles.user_id " +
+                "WHERE users_roles.role_id = 1";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Bonus bonus = new Bonus();
-            bonus.setId(rs.getInt("id"));
-            bonus.setName(rs.getString("name"));
-            bonus.setDescription(rs.getString("description"));
-            bonus.setPrice(rs.getInt("price"));
-            bonus.setCount(rs.getInt("count"));
-            return bonus;
-        }, userId);
+            User user = new User();
+            user.setId(rs.getInt("id"));
+            user.setFirstName(rs.getString("first_name"));
+            user.setLastName(rs.getString("last_name"));
+            user.setMiddleName(rs.getString("middle_name"));
+            user.setCurrentLevel(new Level(0,rs.getString("name")));
+            return user;
+    });
     }
-
 }
