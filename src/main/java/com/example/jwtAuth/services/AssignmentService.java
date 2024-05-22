@@ -2,6 +2,7 @@ package com.example.jwtAuth.services;
 
 import com.example.jwtAuth.authentications.JwtAuthentication;
 import com.example.jwtAuth.dao.CourseDAO;
+import com.example.jwtAuth.dao.InfoModuleDAO;
 import com.example.jwtAuth.dao.QuestModuleDAO;
 import com.example.jwtAuth.dao.UserDAO;
 import com.example.jwtAuth.dtos.CourseMapResponse;
@@ -23,12 +24,15 @@ public class AssignmentService {
 
     private final CourseDAO courseDAO;
 
+    public final InfoModuleDAO infoModuleDAO;
+
     private final QuestModuleDAO questModuleDAO;
 
-    public AssignmentService(UserDAO userDAO, CourseDAO courseDAO, QuestModuleDAO questModuleDAO) {
+    public AssignmentService(UserDAO userDAO, CourseDAO courseDAO, QuestModuleDAO questModuleDAO, InfoModuleDAO infoModuleDAO) {
         this.userDAO = userDAO;
         this.courseDAO = courseDAO;
         this.questModuleDAO = questModuleDAO;
+        this.infoModuleDAO = infoModuleDAO;
     }
     public void assignCourseForUsers(List<Integer> userIds, int courseId) {
         for (Integer userId : userIds) {
@@ -36,42 +40,7 @@ public class AssignmentService {
         }
     }
 
-    /*public Map<String, CourseMapResponse> getAssignedCoursesForUserByLevel(int levelId) {
-        JwtAuthentication authentication = (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
-        User user = new User();
-        user.setId(((ExtendUserDetails) authentication.getPrincipal()).getId());
-        user.setCourses(courseDAO.getUserCoursesByLevel(user.getId(), levelId));
-        Map<String, Pair<Integer, Integer>> scores = new HashMap<>();
-        Map<String, CourseMapResponse> courseMap = new HashMap<>();
-        for (UserCourse userCourse : user.getCourses()) {
-            Pair<Integer, Integer> courseScore = questModuleDAO.getUserQuestModuleScores(userCourse.getId(), user.getId());
-            String direction = userCourse.getDirection().getName();
-            CourseMapResponse course = courseMap.get(direction);
-            if (course == null) {
-                course = new CourseMapResponse();
-                List<ShortCourseDto> newList= new ArrayList<>();
-                course.setCourses(newList);
-                scores.put(direction, new Pair<>(0, 0));
-            }
-            List<ShortCourseDto> shortCourses = course.getCourses();
-            shortCourses.add(new ShortCourseDto(userCourse.getId(), userCourse.getName()));
-            course.setCourses(shortCourses);
-            courseMap.put(direction, course);
 
-            Integer userScore = scores.get(direction).a + courseScore.a;
-            Integer totalScore = scores.get(direction).b + courseScore.b;
-            scores.put(direction, new Pair<>(userScore, totalScore));
-        }
-        for(String direction:scores.keySet()){
-            if(scores.get(direction).b==0){
-                courseMap.get(direction).setUserScores(100);
-            }else {
-                Integer userScore = scores.get(direction).a / scores.get(direction).b * 100;
-                courseMap.get(direction).setUserScores(userScore);
-            }
-        }
-        return courseMap;
-    }*/
     public Map<String, CourseMapResponse> getAssignedCoursesForUserByLevel(int levelId) {
         JwtAuthentication authentication = (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
         User user = new User();
@@ -79,7 +48,7 @@ public class AssignmentService {
         user.setCourses(courseDAO.getUserCoursesByLevel(user.getId(), levelId));
         Map<String, CourseMapResponse> courseMap= unionCoursesByDirection(user);
         for(String direction:courseMap.keySet()){
-            courseMap.get(direction).setUserScores(calculateScoresForDirection(courseMap.get(direction),user));
+            courseMap.get(direction).setUserScores(calculateCoursesPassingForUser(user.getId(),courseMap.get(direction).getCourses()));
         }
         return courseMap;
     }
@@ -91,8 +60,9 @@ public class AssignmentService {
         user.setId(((ExtendUserDetails) authentication.getPrincipal()).getId());
         UserCourse course = new UserCourse(courseDAO.getCourseById(courseId));
         course.setQuestModules(questModuleDAO.getUserQuestModules(courseId, user.getId()));
+        course.setInfoModule(infoModuleDAO.getByCourseId(course.getId()));
         courseResponse = CourseToCourseResponse(course);
-        Pair<Integer,Integer> userScores = calculateUserScoresForCourse(course);
+        Pair<Integer,Integer> userScores = calculateUserScoresForOneCourse(course);
         courseResponse.setUserScore(userScores.a);
         courseResponse.setTotalScore(userScores.b);
         return courseResponse;
@@ -116,7 +86,7 @@ public class AssignmentService {
         return courseMap;
     }
 
-    private Integer calculateScoresForDirection(CourseMapResponse courseMap,User user){
+    /*private Integer calculateScoresForDirection(CourseMapResponse courseMap,User user){
         Integer userScores=0;
         Integer totalScore=0;
         Integer result=0;
@@ -132,7 +102,7 @@ public class AssignmentService {
             result=userScores/totalScore * 100;
         }
        return result;
-    }
+    }*/
 
     private CourseResponse CourseToCourseResponse(UserCourse course){
         CourseResponse courseResponse = new CourseResponse();
@@ -151,7 +121,7 @@ public class AssignmentService {
         courseResponse.setQuestModuleIds(questModuleIds);
         return courseResponse;
     }
-    private Pair<Integer,Integer> calculateUserScoresForCourse(UserCourse course){
+    private Pair<Integer,Integer> calculateUserScoresForOneCourse(UserCourse course){
        Integer userScore=0;
        Integer totalScore=0;
         for (UserQuestModule userQuestModule : course.getQuestModules()) {
@@ -174,7 +144,7 @@ public class AssignmentService {
         return shortCourseDtos;
     }
 
-    public Integer calculateScoresForUserCourse(Integer id, List<ShortCourseDto> shortCourseDtos) {
+    public Integer calculateCoursesPassingForUser(Integer id, List<ShortCourseDto> shortCourseDtos) {
         Integer userScores=0;
         Integer totalScore=0;
         Integer result=0;
@@ -186,7 +156,7 @@ public class AssignmentService {
         if(totalScore==0){
             result=100;
         }else {
-            result=userScores/totalScore * 100;
+            result=userScores*100/totalScore ;
         }
         return result;
     }

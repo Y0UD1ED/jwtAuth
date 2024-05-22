@@ -36,7 +36,6 @@ public class AuthController {
             AuthResponse authResponse=new AuthResponse();
             authResponse.setTokens(authService.login(authRequest));
             User user=userService.findByUsername(authRequest.getUsername());
-            UserInfoDto userInfoDto =userMapper.userToUserInfoDto(user);
             authResponse.setUserId(user.getId());
             authResponse.setRoles(user.getRoles());
             return ResponseEntity.ok(authResponse);
@@ -75,6 +74,7 @@ public class AuthController {
         }
 
     }
+
 
 
     @PostMapping("/logout")

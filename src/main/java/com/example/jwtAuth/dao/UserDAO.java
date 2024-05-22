@@ -55,20 +55,6 @@ public class UserDAO {
 
 
 
-    public List<Integer> getAllUsersId() {
-        String sql = "SELECT id FROM users";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("id"));
-    }
-
-    public List<Integer> getAllUsersIdByDirection(Integer id) {
-        String sql = "SELECT id FROM users WHERE direction_id =?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("id"),id);
-    }
-
-    public List<Integer> getAllUsersIdByLevel(Integer id) {
-        String sql = "SELECT id FROM users WHERE current_level =?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> rs.getInt("id"), id);
-    }
 
     public List<User> getAllUsersByLevelAndDirection(Integer levelId, Integer directionId) {
         String sql = "SELECT DISTINCT users.id,first_name,last_name FROM users "+
@@ -84,15 +70,6 @@ public class UserDAO {
         }, levelId, directionId);
     }
 
-    public Integer getUserId(String login) {
-        String sql="SELECT id FROM users WHERE login =?";
-        return jdbcTemplate.queryForObject(sql,Integer.class,login);
-    }
-
-    public Integer getUserBalance(Integer id) {
-        String sql="SELECT scores FROM users WHERE id =?";
-        return jdbcTemplate.queryForObject(sql,Integer.class,id);
-    }
 
     public Integer addUser(User user) {
         HashMap<String,Object> params=new HashMap<>();
@@ -156,6 +133,8 @@ public class UserDAO {
             user.setDoW(rs.getString("dow"));
             user.setPhone(rs.getString("phone"));
             user.setBalance(rs.getInt("balance"));
+            user.setCurrentLevel(new Level(rs.getInt("current_level")));
+            user.setDirection(new Direction(rs.getInt("direction_id")));
             return user;
         }, userId);
     }

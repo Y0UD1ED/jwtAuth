@@ -7,7 +7,6 @@ public class CourseRequest {
     Integer levelId;
     String name;
     String infoModuleText;
-
     String description;
 
     List<Integer> userIds;

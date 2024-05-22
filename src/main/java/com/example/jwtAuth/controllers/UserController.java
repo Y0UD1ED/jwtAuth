@@ -56,6 +56,17 @@ public class UserController {
             return ResponseEntity.ok(userCreateResponse);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUser(@PathVariable("id") Integer id){
+        try{
+            User user=userService.findById(id);
+            UserInfoDto userInfoDto=userMapper.userToUserInfoDto(user);
+            return ResponseEntity.ok(userInfoDto);
+        }catch (UsernameNotFoundException e){
+            return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(),"Пользователь не найден"),HttpStatus.NOT_FOUND);
+        }
+    }
+
     private static String generatePassword(int len) {
         String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         Random rnd = new Random();

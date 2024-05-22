@@ -31,6 +31,10 @@ public class QuestModuleDAO {
             questModule.setName(rs.getString("name"));
             questModule.setPosition(rs.getInt("position"));
             questModule.setScores(rs.getInt("scores"));
+            questModule.setPassingScores(rs.getInt("passing_scores"));
+            questModule.setTrialCount(rs.getInt("trial_count"));
+            questModule.setStartDate(rs.getDate("start_date"));
+            questModule.setEndDate(rs.getDate("end_date"));
             return questModule;
         },moduleId).stream().findFirst().orElse(null);
     }
@@ -47,13 +51,15 @@ public class QuestModuleDAO {
     }
 
     public Integer addQuestModule(QuestModule questModule,Integer courseId) {
-        //String sql="INSERT INTO quest_modules(course_id,name,position,scores) VALUES(?,?,?,?)";
-        //jdbcTemplate.update(sql,questModule.getCourseId(),questModule.getName(),questModule.getPosition(),questModule.getScores());
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("name", questModule.getName());
         parameters.put("scores", questModule.getScores());
         parameters.put("position", questModule.getPosition());
         parameters.put("course_id", courseId);
+        parameters.put("passing_scores",questModule.getPassingScores());
+        parameters.put("trial_count",questModule.getTrialCount());
+        parameters.put("start_date",questModule.getStartDate());
+        parameters.put("end_date",questModule.getEndDate());
         return (Integer) insertQuestModule.executeAndReturnKey(parameters);
     }
     public Pair<Integer,Integer> getUserQuestModuleScores(Integer courseId, Integer userId) {
@@ -71,9 +77,9 @@ public class QuestModuleDAO {
         }
     }
 
-    public boolean isUserPassedTest(Integer moduleId, Integer userId) {
+    public Integer getUserTestCount(Integer moduleId, Integer userId) {
         String sql="SELECT COUNT(*) FROM quest_modules_passing WHERE quest_module_id=? AND user_id=?";
-        return jdbcTemplate.queryForObject(sql,Integer.class,moduleId,userId)>0;
+        return jdbcTemplate.queryForObject(sql,Integer.class,moduleId,userId);
     }
 
     public void addUserQuestModule(Integer userId, Integer moduleId, Integer score) {
@@ -84,7 +90,7 @@ public class QuestModuleDAO {
     public List<UserQuestModule> getUserQuestModules(Integer courseId, Integer userId) {
         String sql="SELECT qm.id,qm.name, qm.scores total_scores,qmp.scores user_scores \n" +
                 "FROM quest_modules as qm\n" +
-                "JOIN quest_modules_passing as qmp ON qmp.quest_module_id=qm.id AND qmp.user_id=?\n" +
+                "LEFT JOIN quest_modules_passing as qmp ON qmp.quest_module_id=qm.id AND qmp.user_id=?\n" +
                 "WHERE qm.course_id=?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             UserQuestModule userQuestModule=new UserQuestModule();

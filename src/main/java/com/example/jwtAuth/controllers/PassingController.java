@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.naming.AuthenticationException;
 import java.util.Map;
 
 @RestController
@@ -20,11 +21,9 @@ public class PassingController {
     }
     @PostMapping("/questModule/{id}/pass")
     public ResponseEntity<?> passQuestModule(@PathVariable(value = "id") Integer id, @RequestBody Map<Integer,Integer> answers) {
-        Integer result=0;
         try{
-            result=passingService.passQuestModule(id,answers);
-            return ResponseEntity.ok(result);
-        }catch (Exception e){
+            return ResponseEntity.ok(passingService.passQuestModule(id,answers));
+        }catch (AuthenticationException e){
             return new ResponseEntity<>(new AppError(HttpStatus.FORBIDDEN.value(),e.getMessage()),HttpStatus.FORBIDDEN);
         }
 

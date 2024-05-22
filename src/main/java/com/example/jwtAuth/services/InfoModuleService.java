@@ -14,7 +14,7 @@ public class InfoModuleService {
         this.infoModuleDAO = infoModuleDAO;
     }
 
-    public List<InfoModule> findByCourseId(Integer moduleId){
+    public InfoModule findByCourseId(Integer moduleId){
         return infoModuleDAO.getByCourseId(moduleId);
     }
     public void save(InfoModule infoModule,Integer courseId){

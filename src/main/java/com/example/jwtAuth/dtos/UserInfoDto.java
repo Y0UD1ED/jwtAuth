@@ -1,5 +1,7 @@
 package com.example.jwtAuth.dtos;
 
+import com.example.jwtAuth.models.Direction;
+import com.example.jwtAuth.models.Level;
 import com.example.jwtAuth.models.Role;
 
 import java.util.Collection;
@@ -11,9 +13,9 @@ public class UserInfoDto {
     String middleName;
     String DoB;
     String DoW;
-    String currentLevel;
+    Level currentLevel;
 
-    String direction;
+    Direction direction;
     String job;
     String city;
     String email;
@@ -73,19 +75,19 @@ public class UserInfoDto {
         DoW = doW;
     }
 
-    public String getCurrentLevel() {
+    public Level getCurrentLevel() {
         return currentLevel;
     }
 
-    public void setCurrentLevel(String currentLevel) {
+    public void setCurrentLevel(Level currentLevel) {
         this.currentLevel = currentLevel;
     }
 
-    public String getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(String direction) {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
 

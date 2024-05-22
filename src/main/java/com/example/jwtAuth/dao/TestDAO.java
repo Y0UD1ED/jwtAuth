@@ -32,8 +32,6 @@ public class TestDAO {
         },questModuleId).stream().toList();
     }
     public Integer addTest(Test test){
-        //String sql="INSERT INTO tests (quest_module_id,position,quest) VALUES (?,?,?)";
-        //jdbcTemplate.update(sql, test.getQuestModuleId(), test.getQuestPosition(), test.getQuest());
         Map<String,Object> params=new HashMap<>();
         params.put("quest_module_id",test.getQuestModuleId());
         params.put("position",test.getQuestPosition());

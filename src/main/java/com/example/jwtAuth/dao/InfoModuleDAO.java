@@ -14,7 +14,7 @@ public class InfoModuleDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-   public List<InfoModule> getByCourseId(Integer courseId){
+   public InfoModule getByCourseId(Integer courseId){
         String sql="SELECT * FROM info_modules WHERE course_id=(?) ORDER BY position";
         return jdbcTemplate.query(sql,(rs, rowNum) -> {
             InfoModule infoModule= new InfoModule();
@@ -23,7 +23,7 @@ public class InfoModuleDAO {
             infoModule.setContentType(rs.getString("type"));
             infoModule.setContentPosition(rs.getInt("position"));
             return infoModule;
-        },courseId).stream().toList();
+        },courseId).stream().findFirst().orElse(null);
    }
 
    public void addInfoModule(InfoModule infoModule,Integer courseId){

@@ -37,8 +37,8 @@ public class CourseController {
         return ResponseEntity.ok(questModuleService.findQuestModuleById(questModuleId));
     }
 
-    @PostMapping("/addQuestModule")
-    public void addQuestModule(@RequestBody QuestModule questModule,@RequestBody Integer courseId) {
+    @PostMapping("/addQuestModule/{courseId}")
+    public void addQuestModule(@RequestBody QuestModule questModule, @PathVariable(value = "courseId") Integer courseId) {
         questModuleService.saveQuestModule(questModule,courseId);
     }
 

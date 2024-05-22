@@ -59,7 +59,7 @@ public class CourseDAO {
             userCourse.setName(rs.getString("course_name"));
             userCourse.setDirection(new Direction(rs.getString("direction")));
             return userCourse;
-        },id,levelId);
+        },levelId,id);
     }
     public Integer addCourse(Course course, Integer authorId){
         Map<String, Object> parameters = new HashMap<>();

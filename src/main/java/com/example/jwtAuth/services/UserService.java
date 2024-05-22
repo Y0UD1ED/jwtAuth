@@ -1,6 +1,8 @@
 package com.example.jwtAuth.services;
 
 import com.example.jwtAuth.authentications.JwtAuthentication;
+import com.example.jwtAuth.dao.DirectionDAO;
+import com.example.jwtAuth.dao.LevelDAO;
 import com.example.jwtAuth.dao.UserDAO;
 import com.example.jwtAuth.dtos.CourseMapResponse;
 import com.example.jwtAuth.dtos.CourseResponse;
@@ -23,17 +25,16 @@ public class UserService implements UserDetailsService {
 
     private final UserDAO userDAO;
 
-    private final BonusesService bonusesService;
-    private final CourseService courseService;
+    private final LevelDAO levelDAO;
 
-    private final QuestModuleService questModuleService;
+    private final DirectionDAO directionDAO;
 
 
-    public UserService(UserDAO userDAO, CourseService courseService, QuestModuleService questModuleService, BonusesService bonusesService) {
+
+    public UserService(UserDAO userDAO, LevelDAO levelDAO, DirectionDAO directionDAO) {
         this.userDAO = userDAO;
-        this.courseService = courseService;
-        this.questModuleService = questModuleService;
-        this.bonusesService = bonusesService;
+        this.levelDAO = levelDAO;
+        this.directionDAO = directionDAO;
     }
 
     public User findByUsername(String username) {
@@ -88,11 +89,12 @@ public class UserService implements UserDetailsService {
     }
 
 
+    public User findById(Integer id) {
+        User user = userDAO.getUserById(id);
+        user.setRoles(userDAO.getUsersRoles(id));
+        user.setCurrentLevel(levelDAO.getById(user.getCurrentLevel().getId()));
+        user.setDirection(directionDAO.getDirectionById(user.getDirection().getId()));
+        return user;
 
-
-
-
-
-
-
+    }
 }
